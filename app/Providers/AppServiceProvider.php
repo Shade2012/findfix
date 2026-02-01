@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Providers;
-
+use Illuminate\Support\Facades\Response;
+use App\Interfaces\AuthRepositoryInterface;
+use App\Repositories\AuthRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            AuthRepositoryInterface::class, 
+            AuthRepository::class
+        );
     }
 
     /**
@@ -19,6 +24,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Response::macro('success', function ($data = null, $message = 'Success', $status = 200) {
+            return response()->json([
+                'status' => 'success',
+                'message' => $message,
+                'data' => $data,
+            ], $status);
+        });
+
+        Response::macro('error', function ($message = 'Error', $errors = null, $status = 400) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $message,
+                'errors' => $errors,
+            ], $status);
+        });
     }
 }
