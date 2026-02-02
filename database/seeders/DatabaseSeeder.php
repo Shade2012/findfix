@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\UserRoles;
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -26,5 +27,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'testadmin@example.com',
             'user_role_id' => UserRoles::where('name','admin')->first()->id,
         ]);
+        $this->call(BuildingSeeder::class);
+        $this->call(RoomSeeder::class);
+        $this->call(HubSeeder::class);
     }
 }
