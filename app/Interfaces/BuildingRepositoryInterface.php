@@ -11,4 +11,6 @@ interface BuildingRepositoryInterface{
 
     public function createRoom(array $data) : Room;
     public function createBuilding(array $data) : Building;
+
+    
 }

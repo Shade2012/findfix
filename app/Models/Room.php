@@ -15,6 +15,9 @@ class Room extends Model
         'description'
     ];
 
+    public function hub() {
+        return $this->hasOne(Hub::class);
+    }
     public function building()
     {
         return $this->belongsTo(Building::class, 'building_id');

@@ -4,8 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\UserRoles;
 use App\Models\User;
-use App\Models\Building;
-use App\Models\Room;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -30,5 +29,6 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call(BuildingSeeder::class);
         $this->call(RoomSeeder::class);
+        $this->call(HubSeeder::class);
     }
 }
