@@ -4,6 +4,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Response;
 use App\Interfaces\AuthRepositoryInterface;
 use App\Repositories\AuthRepository;
+use App\Interfaces\BuildingRepositoryInterface;
+use App\Repositories\BuildingRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AuthRepositoryInterface::class, 
             AuthRepository::class
+        );
+        $this->app->bind(
+            BuildingRepositoryInterface::class, 
+            BuildingRepository::class
         );
     }
 

@@ -11,6 +11,7 @@ class Building extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'building_name',
         'description'
     ];
