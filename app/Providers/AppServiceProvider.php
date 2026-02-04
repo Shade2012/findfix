@@ -6,6 +6,8 @@ use App\Interfaces\AuthRepositoryInterface;
 use App\Repositories\AuthRepository;
 use App\Interfaces\BuildingRepositoryInterface;
 use App\Repositories\BuildingRepository;
+use App\Interfaces\FoundRepositoryInterface;
+use App\Repositories\FoundRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             BuildingRepositoryInterface::class, 
             BuildingRepository::class
+        );
+        $this->app->bind(
+            FoundRepositoryInterface::class, 
+            FoundRepository::class
         );
     }
 

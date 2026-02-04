@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildingRoomController;
+use App\Http\Controllers\FoundController;
 
 
 Route::prefix('auth')->group(function () {
@@ -25,7 +26,14 @@ Route::prefix('buildings')->group(function () {
             Route::post('/create-rooms', [BuildingRoomController::class, 'createRoom']);
         });
     });
- 
+});
+
+Route::prefix('founds')->group(function(){
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::get('/get-count-report',[FoundController::class,'getCountReport']);
+        Route::get('/get-newest-report',[FoundController::class,'getNewestReport']);
+        Route::get('/get-founds',[FoundController::class,'getFounds']);
+    });
 });
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
