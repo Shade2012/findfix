@@ -36,6 +36,10 @@ Route::prefix('founds')->group(function(){
         Route::get('/get-newest-report',[FoundController::class,'getNewestReport']);
         Route::get('/get-founds',[FoundController::class,'getFounds']);
         Route::post('/create-report',[FoundController::class,'store']);
+        Route::delete('/delete-report/{id}',[FoundController::class,'deleteReport']);
+        Route::post('/delete-images',[FoundController::class,'deleteImages']);
+        Route::post('/update-found/{id}',[FoundController::class,'update']);
+        // update
     });
 });
 // Route::get('/user', function (Request $request) {

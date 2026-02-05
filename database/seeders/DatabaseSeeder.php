@@ -27,6 +27,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'testadmin@example.com',
             'user_role_id' => UserRoles::where('name','admin')->first()->id,
         ]);
+        User::factory()->create([
+            'name' => 'Test User 2',
+            'email' => 'testuser2@example.com',
+            'user_role_id' => UserRoles::where('name','user')->first()->id,
+        ]);
         $this->call(BuildingSeeder::class);
         $this->call(RoomSeeder::class);
         $this->call(HubSeeder::class);

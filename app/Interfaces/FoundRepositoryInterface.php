@@ -1,6 +1,6 @@
 <?php
 namespace App\Interfaces;
-
+use App\Models\Found;
 interface FoundRepositoryInterface{
     public function getNewestFound();
 
@@ -12,4 +12,14 @@ interface FoundRepositoryInterface{
 
     public function createReport(array $params = []);   
     public function createFoundImages(array $data = []);
+
+    public function deleteFound(int $id);
+    public function updateFound(int $id, array $params = []);
+
+    public function getFound(int $id);
+
+    public function addFoundImages(Found $found, array $files);
+    public function deleteFoundImages(array $ids);
+
+
 }

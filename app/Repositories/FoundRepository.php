@@ -1,6 +1,10 @@
 <?php
 namespace App\Repositories;
 
+
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Interfaces\FoundRepositoryInterface;
 use App\Models\FoundImages;
 use App\Utils\Status;
@@ -39,9 +43,11 @@ class FoundRepository implements FoundRepositoryInterface{
         ]);
     }
 
-    public function getFounds(array $params = []){
+    public function getFound(int $id){
+        return Found::where('id' ,$id)->first();
+    }
 
-        
+    public function getFounds(array $params = []){
         $query = Found::query();
         if(!empty($params['found_name'])){
             $query->where('found_name','LIKE','%'.$params['found_name'].'%');
@@ -65,6 +71,12 @@ class FoundRepository implements FoundRepositoryInterface{
         ]);
     }
 
+    public function updateFound(int $id,array $data = []){
+        $found = Found::findOrFail($id);
+        $found->update($data);
+        return $found->fresh(['user','room.building','category','status','foundImages']);
+    }
+
     public function createReport(array $data = []){
          return Found::create($data);
     }
@@ -85,6 +97,35 @@ class FoundRepository implements FoundRepositoryInterface{
 
     public function createFoundImages(array $data = []){
         return FoundImages::create($data);
+    }
+
+    public function deleteFound(int $id){
+        try{
+            Found::where('id', $id)->delete();
+            return response()->success(null,'Berhasil Hapus');
+        } catch (ModelNotFoundException $e) {
+            return response()->error('Data tidak ditemukan', null, 404);
+        } catch (\Exception $e) {
+            return response()->error('Gagal menghapus laporan', $e->getMessage(), 500);
+        }
+    }
+
+    public function addFoundImages(Found $found, array $files){
+        if($files){
+            foreach ($files as $image) {
+                $filename = (string) Str::uuid() . '.' . $image->getClientOriginalExtension();
+                $path = $image->storeAs('images', $filename, 'public');
+                $found->foundImages()->create(['image_path' => $path]);
+            }
+        }
+    }
+
+    public function deleteFoundImages(array $ids){
+        $images = FoundImages::whereIn('id', $ids)->get();
+        foreach($images as $img){
+            Storage::disk("public")->delete($img->image_path);
+        }
+        FoundImages::whereIn("id", $ids)->delete();
     }
 }
 
