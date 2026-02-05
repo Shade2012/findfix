@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\UserRoles;
+use App\Models\Found;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,7 +50,10 @@ class User extends Authenticatable
         ];
     }
 
-      public function role()
+    public function founds(){
+        return $this->hasMany(Found::class);
+    }
+    public function role()
     {
         return $this->belongsTo(UserRoles::class, 'user_role_id');
     }

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Building;
+use App\Models\Found;
 use App\Models\Room;
 
 class Hub extends Model
@@ -18,5 +18,8 @@ class Hub extends Model
     public function room()
     {
         return $this->belongsTo(Room::class, 'room_id');
+    }
+    public function founds(){
+        return $this->hasMany(Found::class);
     }
 }
