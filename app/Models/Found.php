@@ -6,12 +6,12 @@ use App\Models\Room;
 use App\Models\Hub;
 use App\Models\FoundCategory;
 use App\Models\FoundStatus;
+use App\Models\FoundImages;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Found extends Model
 {
-    protected $appends = ['found_img_url'];
+    
     protected $fillable = [
         'user_id',
         'room_id',
@@ -21,15 +21,20 @@ class Found extends Model
         'found_description',
         'found_name',
         'found_phone_number',
-        'found_img',
         'found_date'
     ];
     protected static function booted(){
         static::deleting(function ($found) {
-            if ($found->found_img) {
-                Storage::disk('public')->delete($found->found_img);
-            }
-        });
+                foreach($found->foundImages as $image){
+                    if($image->image_path){
+                        Storage::disk('public')->delete($image->image_path);
+                    }
+                }
+            });
+    }
+
+    public function foundImages() {
+        return $this->hasMany(FoundImages::class);
     }
 
     public function status(){
@@ -47,10 +52,5 @@ class Found extends Model
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }
-    public function getFoundImgUrlAttribute()
-    {
-        return $this->found_img ? Storage::disk('public')->url($this->found_img): url(path: '/images/placeholder.png');
-    }
     
-
 }

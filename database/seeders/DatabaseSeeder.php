@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RoomSeeder::class);
         $this->call(HubSeeder::class);
         $this->call(FoundSeeder::class);
+        $this->call(FoundImagesSeeder::class);
     }
 }

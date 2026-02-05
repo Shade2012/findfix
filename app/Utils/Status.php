@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Utils;
-enum FoundStatus: int {
+enum Status: int {
     case DITEMUKAN = 1;
     case HILANG = 2;
     case DIKEMBALIKAN = 3;

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string("found_description");
             $table->string("found_name");
             $table->string("found_phone_number")->nullable();
-            $table->string("found_img")->nullable();
             $table->dateTime("found_date")->index();
             $table->timestamps();
         });
