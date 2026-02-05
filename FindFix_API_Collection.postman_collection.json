@@ -1,0 +1,350 @@
+{
+    "info": {
+        "name": "FindFix - Lost & Found Items API",
+        "description": "Complete API collection for Lost & Found Items CRUD operations",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://127.0.0.1:8000",
+            "type": "string"
+        },
+        {
+            "key": "token",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.collectionVariables.set('token', jsonData.data.token);",
+                                    "    console.log('Token saved: ' + jsonData.data.token);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get User Info",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/auth/get",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "auth",
+                                "get"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Lost & Found Items",
+            "item": [
+                {
+                    "name": "1. Create Item (with images)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "category_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "title",
+                                    "value": "Laptop Asus ROG Hilang",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "description",
+                                    "value": "Laptop gaming warna hitam hilang di gedung baru lantai 5",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "status",
+                                    "value": "lost",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "date_incident",
+                                    "value": "2026-02-05",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "building_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "specific_location",
+                                    "value": "Dekat kantin lantai 5",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "contact_phone",
+                                    "value": "08123456789",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "images[0]",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/items",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "2. List All Items",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/items",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "3. List Items - Filter by Category",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/items?category_id=1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items"
+                            ],
+                            "query": [
+                                {
+                                    "key": "category_id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "4. List Items - Filter by Status",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/items?status=lost",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items"
+                            ],
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "lost"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "5. Search Items",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/items?search=laptop",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items"
+                            ],
+                            "query": [
+                                {
+                                    "key": "search",
+                                    "value": "laptop"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "6. Get Item Detail",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/items/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "7. Get My Reports",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/items/my/reports",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items",
+                                "my",
+                                "reports"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "8. Update Item",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"status\": \"found\",\n  \"description\": \"Laptop sudah ditemukan!\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/items/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items",
+                                "1"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "9. Delete Item",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/items/1",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "items",
+                                "1"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

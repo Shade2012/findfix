@@ -31,17 +31,17 @@ Route::prefix('buildings')->group(function () {
 
 // Lost & Found Items Routes
 Route::prefix('items')->group(function () {
-    // Public routes
-    Route::get('/', [ItemController::class, 'index']);
-    Route::get('/{id}', [ItemController::class, 'show']);
-    
-    // Protected routes (requires authentication)
+    // Protected routes FIRST (more specific)
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/my/reports', [ItemController::class, 'myReports']);
         Route::post('/', [ItemController::class, 'store']);
         Route::put('/{id}', [ItemController::class, 'update']);
         Route::delete('/{id}', [ItemController::class, 'destroy']);
-        Route::get('/my/reports', [ItemController::class, 'myReports']);
     });
+    
+    // Public routes AFTER (less specific)
+    Route::get('/', [ItemController::class, 'index']);
+    Route::get('/{id}', [ItemController::class, 'show']);
 });
 
 // Route::get('/user', function (Request $request) {
