@@ -28,6 +28,7 @@ Route::prefix('auth')->group(function () {
 Route::prefix('buildings')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{building_id}/rooms', [BuildingRoomController::class, 'getRoomByBuildingId']);
+        Route::get('/rooms', [BuildingRoomController::class, 'getRoomAndBuilding']);
         Route::middleware(['role:admin'])->group(function () {
             Route::post('/create-rooms', [BuildingRoomController::class, 'createRoom']);
         });

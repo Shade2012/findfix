@@ -19,6 +19,14 @@ class BuildingRoomController extends Controller
         return $this->buildingRepository->getRoomByBuildingId($buildingId);
     }
 
+    public function getRoomAndBuilding(){
+        try {
+            $buildings = $this->buildingRepository->getBuilding();
+            return response()->success($buildings,'Berhasil mendapatkan data building');
+        }catch(\Exception $e){
+            return response()->error("Gagal mendapatkan data building",$e->getMessage());
+        }
+    }
     public function createRoom(Request $request){
         $validated = $request->validate([
             'building_id' => 'nullable|exists:buildings,id',
