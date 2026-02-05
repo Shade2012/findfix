@@ -4,18 +4,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BuildingRoomController;
+use App\Http\Controllers\PasswordResetController;
 
 
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-    Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/get', [AuthController::class, 'index']);
+    // Password Reset Routes
+    Route::post('/forgot-password', [PasswordResetController::class, 'requestOTP']);
+    Route::post('/verify-otp', [PasswordResetController::class, 'verifyOTP']);
+    Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 
-    Route::middleware(['role:admin'])->group(function () {
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('/get', [AuthController::class, 'index']);
+    });
+
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::get('/admin', [AuthController::class, 'testAdmin']);
     });
-});
 });
 
 Route::prefix('buildings')->group(function () {
