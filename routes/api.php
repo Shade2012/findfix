@@ -35,12 +35,12 @@ Route::prefix('buildings')->group(function () {
 });
 
 Route::prefix('founds')->group(function(){
+    Route::get('/get-count-report',[FoundController::class,'getCountReport']);
+    Route::get('/get-newest-report',[FoundController::class,'getNewestReport']);
+    Route::get('/get-founds',[FoundController::class,'getFounds']);
     Route::middleware('auth:sanctum')->group(function(){
         Route::get('/get-found-category',[FoundController::class,'getFoundCategory']);
         Route::get('/get-found-status',[FoundController::class,'getFoundStatus']);
-        Route::get('/get-count-report',[FoundController::class,'getCountReport']);
-        Route::get('/get-newest-report',[FoundController::class,'getNewestReport']);
-        Route::get('/get-founds',[FoundController::class,'getFounds']);
         Route::post('/create-report',[FoundController::class,'store']);
         Route::delete('/delete-report/{id}',[FoundController::class,'deleteReport']);
         Route::post('/delete-images',[FoundController::class,'deleteImages']);
