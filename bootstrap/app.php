@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
          $middleware->alias([
         'role' => RoleMiddleware::class,
+        $middleware->use([
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ])
     ]);
        $middleware->appendToGroup('api', [
         \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
