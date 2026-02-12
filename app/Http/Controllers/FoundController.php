@@ -28,6 +28,7 @@ class FoundController extends Controller
             'room_id' => 'nullable|integer',
             'found_name' => 'nullable|string|max:255',
             'found_category_id' => 'nullable|integer|exists:found_categories,id',
+            'found_status_id' => 'nullable|integer|exists:found_statuses,id',
             'last_date' => 'nullable|date'
         ]);
         return $this->foundRepository->getFounds($validated);

@@ -61,6 +61,11 @@ class FoundRepository implements FoundRepositoryInterface{
   
         }
 
+        if (!empty($params['found_status_id'])) {
+            $query->where('found_status_id', '=', $params['found_status_id']);
+  
+        }
+
         if(!empty($params['last_date'])){
             $query->where('found_date','>=',Carbon::parse($params['last_date']));
         }
