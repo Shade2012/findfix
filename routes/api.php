@@ -42,6 +42,7 @@ Route::prefix('founds')->group(function(){
         Route::get('/get-count-report',[FoundController::class,'getCountReport']);
         Route::get('/get-newest-report',[FoundController::class,'getNewestReport']);
         Route::get('/get-founds',[FoundController::class,'getFounds']);
+        Route::get('/get-founds-statistic',[FoundController::class,'getFoundCountByStatusId']);
         Route::post('/create-report',[FoundController::class,'store']);
         Route::delete('/delete-report/{id}',[FoundController::class,'deleteReport']);
         Route::post('/delete-images',[FoundController::class,'deleteImages']);
