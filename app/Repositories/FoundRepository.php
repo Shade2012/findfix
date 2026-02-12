@@ -13,6 +13,8 @@ use App\Models\Found;
 use App\Models\FoundCategory;
 use App\Models\FoundStatus;
 use App\Models\Room;
+use Illuminate\Support\Facades\DB;
+
 
 class FoundRepository implements FoundRepositoryInterface{
     public function getNewestFound(){
@@ -73,6 +75,28 @@ class FoundRepository implements FoundRepositoryInterface{
         $data = $query->with(['user','room.building','category','status','foundImages'])->get();
          return response()->success([
             'founds' => $data
+        ]);
+    }
+
+    public function getFoundCountsByStatus(array $params = []){
+        $currentYear = Carbon::now()->year;
+        $query = Found::query();
+
+        $query->selectRaw('MONTH(found_date) as month, COUNT(*) as total')
+        ->whereYear('found_date', $currentYear);
+
+        $query->where('found_status_id', '=', $params['found_status_id']);
+
+        $data = $query->groupByRaw('MONTH(found_date)')
+              ->pluck('total', 'month');
+        $monthlyData = [];
+        for ($month = 1; $month <= 12; $month++) {
+           $monthlyData[$month] = $data[$month] ?? 0;
+        }
+         return response()->success([
+            'found_status_id' => $params['found_status_id'],
+            'statistic' => $monthlyData
+            
         ]);
     }
 

@@ -10,6 +10,8 @@ interface FoundRepositoryInterface{
     public function getFoundStatus();
     public function getFoundCategory();
 
+    public function getFoundCountsByStatus(array $params = []);
+
     public function createReport(array $params = []);   
     public function createFoundImages(array $data = []);
 

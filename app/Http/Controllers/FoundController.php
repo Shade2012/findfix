@@ -33,6 +33,14 @@ class FoundController extends Controller
         ]);
         return $this->foundRepository->getFounds($validated);
     }
+
+    public function getFoundCountByStatusId(Request $request){
+          $validated = $request->validate([
+            'found_status_id' => 'nullable|integer|exists:found_statuses,id',
+        ]);
+        $validated['found_status_id'] = $validated['found_status_id'] ?? 2; 
+        return $this->foundRepository->getFoundCountsByStatus($validated);
+    }
     public function update($id, Request $request){
         try{
             $validated = $request->validate([
