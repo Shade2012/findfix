@@ -32,7 +32,7 @@ class BuildingRoomController extends Controller
             'building_id' => 'nullable|exists:buildings,id',
             'building_name' => 'required_if:building_id,null|string|max:255',
             'description' => 'required_if:building_id,null|string',
-            'no_room' =>'required|string|max:255',
+            'name_room' =>'required|string|max:255',
             'room_description' => 'required|string|max:255',
         ]);
         try {
@@ -52,7 +52,7 @@ class BuildingRoomController extends Controller
                 }
             }
                 $room = $this->buildingRepository->createRoom([
-                    'no_room'     => $validated['no_room'],
+                    'name_room'     => $validated['name_room'],
                     'building_id' => $building->id,
                     'description' => $validated['room_description'],
                 ]);
