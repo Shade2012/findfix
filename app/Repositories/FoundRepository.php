@@ -45,8 +45,8 @@ class FoundRepository implements FoundRepositoryInterface{
         ]);
     }
 
-    public function getFound(int $id){
-        return Found::where('id' ,$id)->first();
+    public function getFound(int $id, array $relations = []){
+        return Found::with($relations)->where('id' ,$id)->first();
     }
 
     public function getFounds(array $params = []){

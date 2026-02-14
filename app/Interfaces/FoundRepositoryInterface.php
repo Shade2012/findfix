@@ -18,7 +18,7 @@ interface FoundRepositoryInterface{
     public function deleteFound(int $id);
     public function updateFound(int $id, array $params = []);
 
-    public function getFound(int $id);
+    public function getFound(int $id, array $relations = []);
 
     public function addFoundImages(Found $found, array $files);
     public function deleteFoundImages(array $ids);

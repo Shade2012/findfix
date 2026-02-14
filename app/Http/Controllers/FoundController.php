@@ -34,6 +34,18 @@ class FoundController extends Controller
         return $this->foundRepository->getFounds($validated);
     }
 
+    public function getFound($id){
+        try{
+             $relations = ['user','room.building','category','status','foundImages'];
+             $found = $this->foundRepository->getFound($id, $relations);
+             return response()->success($found,'Berhasil mendapatkan found detail id '.$id);
+         }catch(\Exception $e){
+            return response()->error("Gagal mendapatkan found detail id ".$id.$e->getMessage());
+        }
+
+    }
+
+
     public function getFoundCountByStatusId(Request $request){
           $validated = $request->validate([
             'found_status_id' => 'nullable|integer|exists:found_statuses,id',
