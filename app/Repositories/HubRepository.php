@@ -35,8 +35,7 @@ class HubRepository implements HubRepositoryinterface{
     }
 
     public function deleteHub(int $id){
-        $hub = Hub::findOrFail($id);
-        $hub->delete();
+        Hub::findOrFail($id)->delete();
         return true;
     }
 }
