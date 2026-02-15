@@ -32,7 +32,12 @@ Route::prefix('buildings')->group(function () {
         Route::get('/{building_id}/rooms', [BuildingRoomController::class, 'getRoomByBuildingId']);
         Route::get('/rooms', [BuildingRoomController::class, 'getRoomAndBuilding']);
         Route::middleware(['role:admin'])->group(function () {
-            Route::post('/create-rooms', [BuildingRoomController::class, 'createRoom']);
+            Route::post('/create-room', [BuildingRoomController::class, 'createRoom']);
+            Route::post('/create-building', [BuildingRoomController::class, 'createBuilding']);
+            Route::post('/update-room/{id}', [BuildingRoomController::class, 'updateRoom']);
+            Route::post('/update-building/{id}', [BuildingRoomController::class, 'updateBuilding']);
+            Route::delete('/delete-room/{id}', [BuildingRoomController::class, 'deleteRoom']);
+            Route::delete('/delete-building/{id}', [BuildingRoomController::class, 'deleteBuilding']);
         });
     });
 });

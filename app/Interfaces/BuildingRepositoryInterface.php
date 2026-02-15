@@ -12,5 +12,8 @@ interface BuildingRepositoryInterface{
     public function createRoom(array $data) : Room;
     public function createBuilding(array $data) : Building;
 
-    
+    public function updateRoom(int $id, array $data = []);
+    public function updateBuilding(int $id,array $data = []);
+    public function deleteRoom(int $id);
+    public function deleteBuilding(int $id);
 }
