@@ -20,7 +20,7 @@ class BuildingRepository implements BuildingRepositoryInterface{
     }
 
     public function getBuildingById(int $id){
-        return Building::find($id);
+        return Building::findOrFail($id);
     }
 
     public function getRoomByBuildingId(int $buildingId){
@@ -33,6 +33,26 @@ class BuildingRepository implements BuildingRepositoryInterface{
 
     public function createBuilding(array $data): Building{
         return Building::create($data);
+    }
+
+
+    public function updateRoom(int $id, array $data = []){
+        $room = Room::findOrFail($id);
+        $room->update($data);
+        return $room->fresh(['building']);
+    }
+    public function updateBuilding(int $id,array $data = []){
+        $building = Building::findOrFail($id);
+        $building->update($data);
+        return $building->fresh();
+    }
+    public function deleteRoom(int $id){
+        Room::findOrFail($id)->delete();
+        return true;
+    }
+    public function deleteBuilding(int $id){
+        Building::findOrFail($id)->delete();
+        return true;
     }
 }
 
