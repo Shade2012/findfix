@@ -27,10 +27,17 @@ class FoundRepository implements FoundRepositoryInterface{
         ]);
     }
 
-    public function getCountReport(){
-        $statusCounts = Found::selectRaw('found_status_id, COUNT(*) as total')
-            ->groupBy('found_status_id')
-            ->pluck('total', 'found_status_id');
+    public function getCountReport(int $month){
+         $query = Found::query()
+        ->selectRaw('found_status_id, COUNT(*) as total')
+        ->whereYear('found_date', now()->year);
+
+        if($month >= 1 && $month <= 12){
+            $query->whereMonth('found_date', $month);
+        }
+
+        $statusCounts = $query->groupBy('found_status_id')
+        ->pluck('total', 'found_status_id');
 
         $found_count_status_found   = $statusCounts[Status::DITEMUKAN->value] ?? 0;
         $found_count_status_lost    = $statusCounts[Status::HILANG->value] ?? 0;
@@ -72,20 +79,25 @@ class FoundRepository implements FoundRepositoryInterface{
             $query->where('found_date','>=',Carbon::parse($params['last_date']));
         }
 
+         if(!empty($params['user_id'])){
+            $query->where('user_id', '=', $params['user_id']);
+        }
+        
+
         $data = $query->with(['user','room.building','category','status','foundImages'])->get();
          return response()->success([
             'founds' => $data
         ]);
     }
 
-    public function getFoundCountsByStatus(array $params = []){
+    public function getFoundCountsByStatus(int $id){
         $currentYear = Carbon::now()->year;
         $query = Found::query();
 
         $query->selectRaw('MONTH(found_date) as month, COUNT(*) as total')
         ->whereYear('found_date', $currentYear);
 
-        $query->where('found_status_id', '=', $params['found_status_id']);
+        $query->where('found_status_id', '=', $id);
 
         $data = $query->groupByRaw('MONTH(found_date)')
               ->pluck('total', 'month');
@@ -93,11 +105,8 @@ class FoundRepository implements FoundRepositoryInterface{
         for ($month = 1; $month <= 12; $month++) {
            $monthlyData[$month] = $data[$month] ?? 0;
         }
-         return response()->success([
-            'found_status_id' => $params['found_status_id'],
-            'statistic' => $monthlyData
-            
-        ]);
+        return $monthlyData;
+
     }
 
     public function updateFound(int $id,array $data = []){
@@ -155,6 +164,33 @@ class FoundRepository implements FoundRepositoryInterface{
             Storage::disk("public")->delete($img->image_path);
         }
         FoundImages::whereIn("id", $ids)->delete();
+    }
+
+    public function switchStatusFound(int $idFoundStatusMissing, int $idFoundStatusFound){
+       return DB::transaction(function () use (
+        $idFoundStatusMissing,
+        $idFoundStatusFound
+        ) {
+            $foundMissing = Found::findOrFail($idFoundStatusMissing);
+            $foundFound   = Found::findOrFail($idFoundStatusFound);
+
+        if (
+            $foundMissing->found_status_id !== Status::HILANG->value ||
+            $foundFound->found_status_id !== Status::DITEMUKAN->value
+        ) {
+            throw new \Exception('Data status tidak sesuai');
+        }
+
+        $foundFound->update([
+            'found_status_id' => Status::TERSIMPAN->value
+        ]);
+
+        $foundMissing->update([
+            'found_status_id' => Status::DITEMUKAN->value
+        ]);
+
+        return [$foundFound, $foundMissing];
+    });
     }
 }
 

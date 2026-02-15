@@ -49,6 +49,9 @@ Route::prefix('founds')->group(function(){
         Route::delete('/delete-report/{id}',[FoundController::class,'deleteReport']);
         Route::post('/delete-images',[FoundController::class,'deleteImages']);
         Route::post('/update-found/{id}',[FoundController::class,'update']);
+        Route::middleware(['role:admin'])->group(function () {
+            Route::post('/confirm-found',[FoundController::class,'confirmStatusFound']);
+        });
         // update
     });
 });

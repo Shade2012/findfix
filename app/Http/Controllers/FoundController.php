@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Arr;
 use App\Models\Found;
 use Illuminate\Support\Str;
+use App\Utils\Status;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Interfaces\FoundRepositoryInterface;
 use Illuminate\Http\Request;
@@ -25,10 +28,11 @@ class FoundController extends Controller
     }
     public function getFounds(Request $request){
         $validated = $request->validate([
-            'room_id' => 'nullable|integer',
+            'room_id' => 'nullable|integer|exists:rooms,id',
             'found_name' => 'nullable|string|max:255',
             'found_category_id' => 'nullable|integer|exists:found_categories,id',
             'found_status_id' => 'nullable|integer|exists:found_statuses,id',
+            'user_id' => 'nullable|integer|exists:users,id',
             'last_date' => 'nullable|date'
         ]);
         return $this->foundRepository->getFounds($validated);
@@ -46,12 +50,15 @@ class FoundController extends Controller
     }
 
 
-    public function getFoundCountByStatusId(Request $request){
-          $validated = $request->validate([
-            'found_status_id' => 'nullable|integer|exists:found_statuses,id',
-        ]);
-        $validated['found_status_id'] = $validated['found_status_id'] ?? 2; 
-        return $this->foundRepository->getFoundCountsByStatus($validated);
+    public function getFoundCountByStatusId(){
+        $found_status_lost    = Status::HILANG->value;
+        $found_status_return  = Status::DIKEMBALIKAN->value;
+        $found_statistic_lost = $this->foundRepository->getFoundCountsByStatus($found_status_lost);
+        $found_statistic_return = $this->foundRepository->getFoundCountsByStatus($found_status_return);
+         return response()->success([
+            'statistic_lost' => $found_statistic_lost,
+            'statistic_return' => $found_statistic_return
+        ],"Berhasil mendapatkan data statistik");
     }
     public function update($id, Request $request){
         try{
@@ -109,9 +116,14 @@ class FoundController extends Controller
         return $this->foundRepository->deleteFound($id);
     }
 
-    public function getCountReport(){
-        
-        return $this->foundRepository->getCountReport();
+    public function getCountReport(Request $request){
+       $validated = $request->validate([
+            'month' => 'nullable|integer'
+        ]);
+
+        $month = $validated['month'] ?? -1;
+       
+        return $this->foundRepository->getCountReport($month);
     }
 
     public function getNewestReport(){
@@ -164,4 +176,22 @@ class FoundController extends Controller
 
         return response()->success($found,'Berhasil Nambah',201);
     }
+
+    public function confirmStatusFound(Request $request){
+        try{
+            $validated = $request->validate([
+                'report_missing_id'=>'integer',
+                'report_found_id' => 'integer',
+            ]);
+            $reportMissingId = $validated['report_missing_id'];
+            $reportFoundId = $validated['report_found_id'];
+            $result = $this->foundRepository->switchStatusFound($reportMissingId,$reportFoundId);
+            return response()->success($result,'Berhasil penemuan barang',200);
+
+        }catch(\Exception $e){
+            return response()->error("Gagal melakukan konfirmasi penemuan barang ".$e->getMessage());
+        }
+    }
 }
+
+

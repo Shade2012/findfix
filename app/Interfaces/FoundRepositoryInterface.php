@@ -4,13 +4,13 @@ use App\Models\Found;
 interface FoundRepositoryInterface{
     public function getNewestFound();
 
-    public function getCountReport();
+    public function getCountReport(int $month);
 
     public function getFounds(array $params = []);
     public function getFoundStatus();
     public function getFoundCategory();
 
-    public function getFoundCountsByStatus(array $params = []);
+    public function getFoundCountsByStatus(int $id);
 
     public function createReport(array $params = []);   
     public function createFoundImages(array $data = []);
@@ -23,5 +23,5 @@ interface FoundRepositoryInterface{
     public function addFoundImages(Found $found, array $files);
     public function deleteFoundImages(array $ids);
 
-
+    public function switchStatusFound(int $idFoundStatusMissing, int $idFoundStatusFound);
 }
