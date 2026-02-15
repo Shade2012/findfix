@@ -23,5 +23,5 @@ interface FoundRepositoryInterface{
     public function addFoundImages(Found $found, array $files);
     public function deleteFoundImages(array $ids);
 
-    public function switchStatusFound(int $idFoundStatusMissing, int $idFoundStatusFound);
+    public function switchStatusFound(int $idFoundStatusMissing, int $idFoundStatusFound, int $hubId);
 }

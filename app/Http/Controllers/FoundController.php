@@ -180,12 +180,14 @@ class FoundController extends Controller
     public function confirmStatusFound(Request $request){
         try{
             $validated = $request->validate([
-                'report_missing_id'=>'required|integer',
-                'report_found_id' => 'required|integer',
+                'report_missing_id'=>'required|integer|exists:founds,id',
+                'report_found_id' => 'required|integer|exists:founds,id',
+                'hub_id' => 'required|integer|exists:hubs,id',
             ]);
             $reportMissingId = $validated['report_missing_id'];
             $reportFoundId = $validated['report_found_id'];
-            $result = $this->foundRepository->switchStatusFound($reportMissingId,$reportFoundId);
+            $hubId = $validated['hub_id'];
+            $result = $this->foundRepository->switchStatusFound($reportMissingId,$reportFoundId, $hubId);
             return response()->success($result,'Berhasil penemuan barang',200);
 
         }catch(\Exception $e){

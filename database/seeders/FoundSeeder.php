@@ -32,10 +32,11 @@ class FoundSeeder extends Seeder
         ];
         $founds = [
             [1,1,1,1,1,"Barang berwarna hitam dengan corak stiker","Dompet hitam",null,'2026-02-04 15:30:00'],
-            [1,2,2,2,2,"Barang berwarna putih dengan ujung lancip","Pisau Meteor",null,'2026-02-06 15:30:00'],
-            [3,4,1,3,3,"Barang berwarna biru dengan bentuk diamond","Kertas Magic hitam",null,'2026-02-03 15:30:00'],
-            [3,4,1,3,2,"Barang berwarna biru dengan bentuk diamond","Kertas Magic hitam",null,'2026-01-03 15:30:00'],
-            [3,4,1,3,3,"Barang berwarna biru dengan bentuk diamond","Kertas Magic hitam",null,'2026-04-03 15:30:00']
+            [1,2,null,2,2,"Barang berwarna putih dengan ujung lancip","Pisau Meteor",null,'2026-02-06 15:30:00'],
+            [3,4,2,3,3,"Barang berwarna biru dengan bentuk diamond","Kertas Magic hitam",null,'2026-02-03 15:30:00'],
+            [3,4,null,3,2,"Barang berwarna biru dengan bentuk diamond","Kertas Magic hitam",null,'2026-01-03 15:30:00'],
+            [3,4,1,3,3,"Barang berwarna biru dengan bentuk diamond","Kertas Magic hitam",null,'2026-04-03 15:30:00'],
+            [3,4,null,3,1,"Barang berwarna biru dengan bentuk diamond","Kertas Magic hitam",null,'2026-04-03 15:30:00']
         ];
 
        
