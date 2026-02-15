@@ -142,15 +142,15 @@ class FoundController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'room_id'=>'integer',
+            'room_id'=>'required|integer',
             'found_img' => 'nullable',
             'found_img.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
-            'found_category_id'=> 'integer',
-            'found_status_id'=> 'integer',
-            'found_description' => 'string|max:1000',
-            'found_name' => 'string|max:255',
+            'found_category_id'=> 'required|integer',
+            'found_status_id'=> 'required|integer',
+            'found_description' => 'required|string|max:1000',
+            'found_name' => 'required|string|max:255',
             'found_phone_number' => 'nullable|string|max:255',
-            'found_date' => 'nullable|date', 
+            'found_date' => 'required|date', 
         ]);
       
         $files = $request->file('found_img');
@@ -180,8 +180,8 @@ class FoundController extends Controller
     public function confirmStatusFound(Request $request){
         try{
             $validated = $request->validate([
-                'report_missing_id'=>'integer',
-                'report_found_id' => 'integer',
+                'report_missing_id'=>'required|integer',
+                'report_found_id' => 'required|integer',
             ]);
             $reportMissingId = $validated['report_missing_id'];
             $reportFoundId = $validated['report_found_id'];
