@@ -7,6 +7,7 @@ use App\Http\Controllers\BuildingRoomController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\FoundController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\HubController;
 
 
 Route::prefix('auth')->group(function () {
@@ -53,6 +54,18 @@ Route::prefix('founds')->group(function(){
             Route::post('/confirm-found',[FoundController::class,'confirmStatusFound']);
         });
         // update
+    });
+});
+
+Route::prefix('hubs')->group(function(){
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::get('get-hubs',[HubController::class,'getAllHub']);
+        Route::get('get-hubs/{id}',[HubController::class,'getHub']);
+        Route::middleware(['role:admin'])->group(function () {
+            Route::post('/create-hub',[HubController::class,'create']);
+            Route::post('/update-hub/{id}',[HubController::class,'update']);
+            Route::delete('/delete-hub/{id}',[HubController::class,'delete']);
+        });
     });
 });
 

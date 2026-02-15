@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Providers;
+use App\Interfaces\HubRepositoryinterface;
+use App\Repositories\HubRepository;
 use Illuminate\Support\Facades\Response;
 use App\Interfaces\AuthRepositoryInterface;
 use App\Repositories\AuthRepository;
@@ -28,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             FoundRepositoryInterface::class, 
             FoundRepository::class
+        );
+        $this->app->bind(
+            HubRepositoryinterface::class, 
+            HubRepository::class
         );
     }
 

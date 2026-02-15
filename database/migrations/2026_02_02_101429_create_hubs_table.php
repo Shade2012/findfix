@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("hub_name")->unique();
             $table->string("hub_description");
-            $table->foreignId('room_id')->constrained('rooms')->cascadeOnDelete();
+            $table->foreignId('room_id')->unique()->constrained('rooms')->cascadeOnDelete();
             $table->timestamps();
         });
     }
