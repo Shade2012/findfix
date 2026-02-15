@@ -19,6 +19,8 @@ class BuildingRoomController extends Controller
         return $this->buildingRepository->getRoomByBuildingId($buildingId);
     }
 
+ 
+
     public function getRoomAndBuilding(){
         try {
             $buildings = $this->buildingRepository->getBuilding();
@@ -26,6 +28,62 @@ class BuildingRoomController extends Controller
         }catch(\Exception $e){
             return response()->error("Gagal mendapatkan data building",$e->getMessage());
         }
+    }
+
+       public function createRoomSingle(Request $request){
+            $validated = $request->validate([
+                'description' => 'building_id|string',
+                'name_room' =>'string|max:255',
+                'room_description' => 'string|max:255',
+            ]);
+            try {
+                $result = DB::transaction(function () use ($validated) {
+                if (empty($validated['building_id'])) {
+                    $building = $this->buildingRepository->createBuilding([
+                        'building_name' => $validated['building_name'],
+                        'description'   => $validated['description'],
+                    ]);
+                } else {
+                    $building = $this->buildingRepository->getBuildingById($validated['building_id']);
+                    if (!$building) {
+                        $building = $this->buildingRepository->createBuilding([
+                            'building_name' => $validated['building_name'],
+                            'description'   => $validated['description'],
+                        ]);
+                    }
+                }
+                    $room = $this->buildingRepository->createRoom([
+                        'name_room'     => $validated['name_room'],
+                        'building_id' => $building->id,
+                        'description' => $validated['room_description'],
+                    ]);
+                return [
+                    'room' => $room,
+                    'building' => $building,
+                ];
+        });
+
+        return response()->success(
+            $result,
+            'Berhasil membuat room',
+            Response::HTTP_CREATED
+        );
+
+    } catch (\Exception $e) {
+        if ($e instanceof QueryException && $e->getCode() === '23000') {
+            return response()->error(
+                'Gagal membuat room',
+                'Data sudah ada',
+                Response::HTTP_CONFLICT
+            );
+        }
+        return response()->error(
+            'Gagal membuat room',
+            $e->getMessage(),
+            Response::HTTP_INTERNAL_SERVER_ERROR
+        );
+        }
+        return $this->buildingRepository->getRoomByBuildingId($buildingId);
     }
     public function createRoom(Request $request){
         $validated = $request->validate([

@@ -16,7 +16,7 @@ class BuildingRepository implements BuildingRepositoryInterface{
             $query->where('description', 'like', '%' . $params['description'] . '%');
         }
 
-        return $query->with('rooms')->get();
+        return $query->with('rooms.hub')->get();
     }
 
     public function getBuildingById(int $id){

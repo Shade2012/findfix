@@ -30,9 +30,9 @@ class HubController extends Controller{
     public function create(Request $request){
         try{
             $validated = $request->validate([
-                'hub_name'=>'string|max:255',
-                'hub_description' => 'string|max:255',
-                'room_id'=>'integer|exists:rooms,id',
+                'hub_name'=>'required|string|max:255',
+                'hub_description' => 'required|string|max:255',
+                'room_id'=>'required|integer|exists:rooms,id',
             ]);
 
             $result = DB::transaction(function () use ($validated) {
