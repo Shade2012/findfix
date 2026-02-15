@@ -166,9 +166,10 @@ class FoundRepository implements FoundRepositoryInterface{
         FoundImages::whereIn("id", $ids)->delete();
     }
 
-    public function switchStatusFound(int $idFoundStatusMissing, int $idFoundStatusFound){
+    public function switchStatusFound(int $idFoundStatusMissing, int $idFoundStatusFound, int $hubId){
        return DB::transaction(function () use (
         $idFoundStatusMissing,
+        $hubId,
         $idFoundStatusFound
         ) {
             $foundMissing = Found::findOrFail($idFoundStatusMissing);
@@ -182,11 +183,13 @@ class FoundRepository implements FoundRepositoryInterface{
         }
 
         $foundFound->update([
-            'found_status_id' => Status::TERSIMPAN->value
+            'found_status_id' => Status::TERSIMPAN->value,
+            'location_hub_id' => $hubId
         ]);
 
         $foundMissing->update([
-            'found_status_id' => Status::DITEMUKAN->value
+            'found_status_id' => Status::DITEMUKAN->value,
+            'location_hub_id' => $hubId
         ]);
 
         return [$foundFound, $foundMissing];
