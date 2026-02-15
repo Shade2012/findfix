@@ -17,12 +17,16 @@ Route::prefix('auth')->group(function () {
     Route::post('/forgot-password', [PasswordResetController::class, 'requestOTP']);
     Route::post('/verify-otp', [PasswordResetController::class, 'verifyOTP']);
     Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
+    Route::get('/get', [AuthController::class, 'index'])->middleware('auth:sanctum');
+});
 
-    Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('/get', [AuthController::class, 'index']);
-    });
-
+Route::prefix('users')->group(function () {
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+        Route::get('/get', [AuthController::class, 'getUsers']);
+        Route::get('/roles', [AuthController::class, 'getUserRole']);
+        Route::post('/add', [AuthController::class, 'addUser']);
+        Route::post('/update/{id}', [AuthController::class, 'updateUser']);
+        Route::delete('/{id}', [AuthController::class, 'deleteUser']);
         Route::get('/admin', [AuthController::class, 'testAdmin']);
     });
 });

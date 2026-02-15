@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Interfaces\AuthRepositoryInterface;
 use App\Models\User;
+use App\Models\UserRoles;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +26,9 @@ class AuthRepository implements AuthRepositoryInterface{
             'token' => $token
         ]);
     }
+    public function getUsers(){
+        return User::all();
+    }
     public function getUser(){
          $user = Auth::user()->load('role'); // eager load role
     return [
@@ -35,4 +39,23 @@ class AuthRepository implements AuthRepositoryInterface{
     ];
     }
 
+    public function addUser(array $data = []){
+        $user = User::create($data);
+        return $user;
+    }
+    public function getUserRoles(){
+        return UserRoles::all();
+    }
+    public function updateUser(int $id,array $data = []){
+        $user = User::findOrFail($id);
+        $user->update($data);
+
+        return $user->fresh();
+    }
+    public function deleteUser(int $id){
+        $user = User::findOrFail($id);
+        $user->tokens()->delete();
+        $user->delete();
+        return $user;
+    }
 }
