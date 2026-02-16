@@ -16,11 +16,13 @@ class AuthController extends Controller
         $this->authRepository = $authRepository;
     }
     public function index(){
-        
+        $user =  $this->authRepository->getUser();
+        return response()->success($user,'Berhasil mendapatkan akun user',200);
     }
 
     public function getUsers(){
-        return $this->authRepository->getUsers();
+        $users = $this->authRepository->getUsers();
+        return response()->success($users,'Berhasil mendapatkan users',201);
     }
 
     public function login(Request $request){
