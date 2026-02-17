@@ -68,6 +68,7 @@ class FoundController extends Controller
                 'found_img.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
                 'found_category_id'=> 'nullable|integer',
                 'found_status_id'=> 'nullable|integer',
+                'location_hub_id'=> 'nullable|integer',
                 'found_description' => 'nullable|string|max:1000',
                 'found_name' => 'nullable|string|max:255',
                 'found_phone_number' => 'nullable|string|max:255',
