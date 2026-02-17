@@ -3,6 +3,8 @@
 namespace App\Providers;
 use App\Interfaces\HubRepositoryinterface;
 use App\Repositories\HubRepository;
+use App\Interfaces\BadgeRepositoryInterface;
+use App\Repositories\BadgeRepository;
 use Illuminate\Support\Facades\Response;
 use App\Interfaces\AuthRepositoryInterface;
 use App\Repositories\AuthRepository;
@@ -34,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             HubRepositoryinterface::class, 
             HubRepository::class
+        );
+        $this->app->bind(
+            BadgeRepositoryInterface::class, 
+            BadgeRepository::class
         );
     }
 

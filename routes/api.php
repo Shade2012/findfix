@@ -8,6 +8,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\FoundController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\HubController;
+use App\Http\Controllers\BadgeController;
 
 
 Route::prefix('auth')->group(function () {
@@ -84,4 +85,17 @@ Route::prefix('notifications')->middleware('auth:sanctum')->group(function () {
     Route::get('/unread-count', [NotificationController::class, 'unreadCount']);
     Route::post('/{id}/read', [NotificationController::class, 'markAsRead']);
     Route::post('/read-all', [NotificationController::class, 'markAllAsRead']);
+});
+
+// Badge Routes
+Route::prefix('badges')->group(function(){
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::get('get-badges',[BadgeController::class,'getAllBadges']);
+        Route::get('get-badges/{id}',[BadgeController::class,'getBadge']);
+        Route::middleware(['role:admin'])->group(function () {
+            Route::post('/create-badge',[BadgeController::class,'create']);
+            Route::post('/update-badge/{id}',[BadgeController::class,'update']);
+            Route::delete('/delete-badge/{id}',[BadgeController::class,'delete']);
+        });
+    });
 });
