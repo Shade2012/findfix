@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\DB;
 
 class FoundRepository implements FoundRepositoryInterface{
     public function getNewestFound(){
-        $found =  Found::with(['room','user'])->where('found_status_id',Status::DITEMUKAN)->first();
-        $lost =  Found::with(['room','user'])->where('found_status_id',Status::HILANG->value)->first();
+        $found =  Found::with(['room','user'])->where('found_status_id',Status::DITEMUKAN->value)->latest('found_date')->first();
+        $lost =  Found::with(['room','user'])->where('found_status_id',Status::HILANG->value)->latest('found_date')->first();
         
         return response()->success([
            'Ditemukan' => $found,
@@ -84,7 +84,7 @@ class FoundRepository implements FoundRepositoryInterface{
         }
         
 
-        $data = $query->with(['user','room.building','category','status','foundImages'])->get();
+        $data = $query->with(['user','room.building','category','status','foundImages'])->latest('found_date')->get();
          return response()->success([
             'founds' => $data
         ]);
