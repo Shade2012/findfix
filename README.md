@@ -6,7 +6,6 @@ Findfix merupakan aplikasi web untuk pencatatan laporan barang baik temuan dan h
 
 ## Setup Enviroment
 
-- Pull dari branch develop
 - Buat file .env dan copas semua env.example ke file .env
 - Jalankan migrasi dan seeder 'php artisan migrate:fresh --seed '
 - Membuat Symlink 'php artisan storage:link'
