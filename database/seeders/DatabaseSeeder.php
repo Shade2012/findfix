@@ -18,19 +18,19 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $this->call(UserRoleSeeder::class);
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'testuser@example.com',
+            'name' => 'Damar Fikri Haikal',
+            'email' => 'damar.10125289@mahasiswa.unikom.ac.id',
+            'user_role_id' => UserRoles::where('name','user')->first()->id,
+        ]);
+        User::factory()->create([
+            'name' => 'Ryan',
+            'email' => 'ryan.10124310@mahasiswa.unikom.co.id',
             'user_role_id' => UserRoles::where('name','user')->first()->id,
         ]);
         User::factory()->create([
             'name' => 'Test Admin',
             'email' => 'testadmin@example.com',
             'user_role_id' => UserRoles::where('name','admin')->first()->id,
-        ]);
-        User::factory()->create([
-            'name' => 'Test User 2',
-            'email' => 'testuser2@example.com',
-            'user_role_id' => UserRoles::where('name','user')->first()->id,
         ]);
         $this->call(BuildingSeeder::class);
         $this->call(RoomSeeder::class);
