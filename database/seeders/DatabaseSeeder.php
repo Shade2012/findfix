@@ -37,5 +37,6 @@ class DatabaseSeeder extends Seeder
         $this->call(HubSeeder::class);
         $this->call(FoundSeeder::class);
         $this->call(FoundImagesSeeder::class);
+        $this->call(BadgeSeeder::class);
     }
 }
