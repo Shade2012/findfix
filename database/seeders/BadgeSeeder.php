@@ -18,10 +18,12 @@ class BadgeSeeder extends Seeder
             ['Honesty Hero','Menemukan lebih dari 3 barang ','👁️',3],
         ];
 
-        foreach($badges as [$found_id,$image_path]){
+        foreach($badges as [$name, $description, $icon, $min_found]){
             Badge::create([
-                'found_id'   => $found_id,
-                'image_path' => $image_path,
+                'name' => $name,
+                'description' => $description,
+                'icon' => $icon,
+                'min_found' => $min_found
             ]);
         }
     }
